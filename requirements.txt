@@ -1,0 +1,4 @@
+﻿mido
+python-rtmidi
+pygame
+numpy

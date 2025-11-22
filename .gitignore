@@ -1,0 +1,28 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+
+# Tus carpetas personalizadas
+/mp4/
+/wav/
+/img/
+/archivos MuseCore3/
+
+# Archivos por extensión
+*.mp4
+*.wav
+*.mid
+*.midi
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
