@@ -1,16 +1,7 @@
-ticks_per_beat=480, milisegundos por tempo
-clocks_per_click=24: Pulsos de reloj MIDI por click metronómico (solo para sincronización con hardware externo)
-notated_32nd_notes_per_beat=8: subdivición máxima de la unidad de tempo (60 ms = fusa)
-time=0: Ocurre al inicio del track
-tempo=400000: 150 BPM (beats por minuto) Cálculo: 60,000,000 / 400,000 = 150 BPM
-time=0: Al inicio
-
-feliz cumple
-
 MidiFile(type=1, ticks_per_beat=480, tracks=[
   MidiTrack([
-    MetaMessage('time_signature', numerator=1, denominator=4, clocks_per_cli
-ck=24, notated_32nd_notes_per_beat=8, time=0),
+    MetaMessage('time_signature', numerator=1, denominator=4, clocks_per_click=24, notated_32
+nd_notes_per_beat=8, time=0),
     MetaMessage('key_signature', key='F', time=0),
     MetaMessage('set_tempo', tempo=1000000, time=0),
     Message('control_change', channel=0, control=121, value=0, time=0),
@@ -20,14 +11,57 @@ ck=24, notated_32nd_notes_per_beat=8, time=0),
     Message('control_change', channel=0, control=91, value=0, time=0),
     Message('control_change', channel=0, control=93, value=0, time=0),
     MetaMessage('midi_port', port=0, time=0),
-    MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_cli
-ck=24, notated_32nd_notes_per_beat=8, time=480),
-
-miqueas 6-8
-
-MidiFile(type=1, ticks_per_beat=480, tracks=[
-  MidiTrack([
-    MetaMessage('time_signature', numerator=1, denominator=4, clocks_per_cli
-ck=24, notated_32nd_notes_per_beat=8, time=0),
-    MetaMessage('key_signature', key='E', time=0),
-    MetaMessage('set_tempo', tempo=400000, time=0),
+    MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_click=24, notated_32
+nd_notes_per_beat=8, time=480),
+    Message('note_on', channel=0, note=60, velocity=80, time=0),
+    Message('note_on', channel=0, note=60, velocity=0, time=227),
+    Message('note_on', channel=0, note=60, velocity=80, time=13),
+    Message('note_on', channel=0, note=60, velocity=0, time=227),
+    Message('note_on', channel=0, note=62, velocity=80, time=13),
+    Message('note_on', channel=0, note=62, velocity=0, time=455),
+    Message('note_on', channel=0, note=60, velocity=80, time=25),
+    Message('note_on', channel=0, note=60, velocity=0, time=911),
+    Message('note_on', channel=0, note=65, velocity=80, time=49),
+    Message('note_on', channel=0, note=65, velocity=0, time=455),
+    Message('note_on', channel=0, note=64, velocity=80, time=25),
+    Message('note_on', channel=0, note=64, velocity=0, time=1367),
+    Message('note_on', channel=0, note=60, velocity=80, time=73),
+    Message('note_on', channel=0, note=60, velocity=0, time=227),
+    Message('note_on', channel=0, note=60, velocity=80, time=13),
+    Message('note_on', channel=0, note=60, velocity=0, time=227),
+    Message('note_on', channel=0, note=62, velocity=80, time=13),
+    Message('note_on', channel=0, note=62, velocity=0, time=455),
+    Message('note_on', channel=0, note=60, velocity=80, time=25),
+    Message('note_on', channel=0, note=60, velocity=0, time=911),
+    Message('note_on', channel=0, note=67, velocity=80, time=49),
+    Message('note_on', channel=0, note=67, velocity=0, time=455),
+    Message('note_on', channel=0, note=65, velocity=80, time=25),
+    Message('note_on', channel=0, note=65, velocity=0, time=1367),
+    Message('note_on', channel=0, note=60, velocity=80, time=73),
+    Message('note_on', channel=0, note=60, velocity=0, time=227),
+    Message('note_on', channel=0, note=60, velocity=80, time=13),
+    Message('note_on', channel=0, note=60, velocity=0, time=227),
+    Message('note_on', channel=0, note=72, velocity=80, time=13),
+    Message('note_on', channel=0, note=72, velocity=0, time=455),
+    Message('note_on', channel=0, note=69, velocity=80, time=25),
+    Message('note_on', channel=0, note=69, velocity=0, time=911),
+    Message('note_on', channel=0, note=65, velocity=80, time=49),
+    Message('note_on', channel=0, note=65, velocity=0, time=455),
+    Message('note_on', channel=0, note=64, velocity=80, time=25),
+    Message('note_on', channel=0, note=64, velocity=0, time=455),
+    Message('note_on', channel=0, note=62, velocity=80, time=25),
+    Message('note_on', channel=0, note=62, velocity=0, time=911),
+    Message('note_on', channel=0, note=70, velocity=80, time=49),
+    Message('note_on', channel=0, note=70, velocity=0, time=227),
+    Message('note_on', channel=0, note=70, velocity=80, time=13),
+    Message('note_on', channel=0, note=70, velocity=0, time=227),
+    Message('note_on', channel=0, note=69, velocity=80, time=13),
+    Message('note_on', channel=0, note=69, velocity=0, time=455),
+    Message('note_on', channel=0, note=65, velocity=80, time=25),
+    Message('note_on', channel=0, note=65, velocity=0, time=911),
+    Message('note_on', channel=0, note=67, velocity=80, time=49),
+    Message('note_on', channel=0, note=67, velocity=0, time=455),
+    Message('note_on', channel=0, note=65, velocity=80, time=25),
+    Message('note_on', channel=0, note=65, velocity=0, time=911),
+    MetaMessage('end_of_track', time=1)])
+])
