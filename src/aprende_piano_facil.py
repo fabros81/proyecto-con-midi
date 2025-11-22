@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Dec  5 13:33:37 2024
+falta:
 
-@author: Administrador
+- lograr que funciene para cualquier midi no polifónico
+- logra que funcione para midi polifónico
+- lograr que funcione con 4 channels como entrada
 """
 #%%  path cancion
 
@@ -37,14 +39,35 @@ ALTO_TECLA = ANCHO_TECLA*150/26
 # si son 35 teclas blancas, arrancando de La 50 a la 85
 FINAL_RECORRIDO = 509 # intenté poner algo asi como alto_pantalla-alto_tecla-nota.height, pero no funcionaba. Usmeando encontré que solo reconocía numeros enteros pares.
 # de hecho si asignas a FINAL_RECORRIDO un número impar no funciona. No se porqué todavía.
-TIEMPO_INICIAL= time.time()
-# TIEMPO_FINAL = TIEMPO_INICIAL + 10
+
+
+
+#**********Meta mensajes**************
+# MidiFil(type=1, ticks_per_beat=480, tracks=etc.)
+
+TICKS_PER_BEAT = 0 #ticks_per_beat de los metamensajes
+# 'time_signature'
+NUMERATOR =1
+DENOMINATOR = 4
+CLOCK_PER_CLICK= 0
+NOTATED_32ND_NOTES_PER_BEAT=0
+TIME=0 # Time del metamensaje 'time_signature' unicamente
+
+# 'key_signature' para cambio de clave. no los hice, no se para que me pueden servir
+# KEY = F
+# TIME = 0 
+
+# 'set_tempo'
+TEMPO = 0 #una funcion los define a partir de los metamensajes
+# TIME=0 # tiempo en que cambia el tempo
+
+# 'control_change' no lo uso por ahora
+# 'midi_port' no lo uso por ahora
+#*********** fin de metamensajes ************************
 
 PIXELES_X_PULSO = 60
 VELOCIDAD = 1 # solo numeros enteros >= 1
-TEMPO = 0 #una funcion los define a partir de los metamensajes
-PPM = 0 # BPM una funcion los define a partir de los metamensajes
-MS_X_NEGRA = 0 #una funcion los define a partir de los metamensajes
+PPM = 0 # BPM una funcion lo calcula a partir de los metamensajes
 lanzar = []
 a_encender = []
 
@@ -121,18 +144,31 @@ def read_metamsg(file):
     '''
     Ajusta los parámetros default a los que provee el midi file
     '''
-    global MS_X_NEGRA
+    global TICKS_PER_BEAT
     global TEMPO
     global PPM
     
+    global NUMERATOR
+    global DENOMINATOR
+    global CLOCK_PER_CLICK
+    global NOTATED_32ND_NOTES_PER_BEAT
+    global TIME
+    
     mid = MidiFile(file)
-    MS_X_NEGRA = mid.ticks_per_beat
+    TICKS_PER_BEAT = mid.ticks_per_beat
     for i,track in enumerate (mid.tracks):
         if i==0:
             for msg in track:
                 if msg.type == "set_tempo":
                     TEMPO = msg.tempo           
                     PPM = 60000000 / TEMPO
+                if msg.is_meta and msg.type == 'time_signature':
+                    NUMERATOR = msg.numerator
+                    DENOMINATOR = msg.denominator
+                    CLOCK_PER_CLICK = msg.clocks_per_click
+                    NOTATED_32ND_NOTES_PER_BEAT = msg.notated_32nd_notes_per_beat
+                    TIME = msg.time
+            
 #%%  def midi file parse
 def read_midi(file_midi_path):
     '''
@@ -256,7 +292,37 @@ for i in tecl_bla:
 for i in tecl_neg:
     diccionario[i] = PrintNoteNeg(i)                
 
+def ticks_a_ms(ticks_midi):
+    return ticks_midi * (60000 / PPM) / TICKS_PER_BEAT
 
+# funciones debug
+
+def printConstantes():
+    global FINAL_RECORRIDO
+    global TICKS_PER_BEAT
+    global TEMPO
+    global PPM
+    
+    global NUMERATOR
+    global DENOMINATOR
+    global CLOCK_PER_CLICK
+    global NOTATED_32ND_NOTES_PER_BEAT
+    global TIME
+    print(f"""
+          Final recorrido:            {FINAL_RECORRIDO}
+          Pixeles por segundo:        {PIXELES_X_PULSO}
+          Velocidad:                  {VELOCIDAD}                           
+          Tempo:                      {TEMPO}          
+          PPM:                        {PPM}          
+          Ms por Negra:               {TICKS_PER_BEAT}  
+          numerador:                  {NUMERATOR}        
+          denominador:                {DENOMINATOR}
+          clock_per_click             {CLOCK_PER_CLICK}
+          notated_32nd_notes_per_beat {NOTATED_32ND_NOTES_PER_BEAT}
+          time: ('time_signature')    {TIME}
+          """       
+    )
+ 
 def getMSJS(f):
     for i in f:
         print(i)
@@ -283,12 +349,13 @@ pygame.init()
 screen = pygame.display.set_mode((ANCHO_PANTALLA,ALTO_PANTALLA))
 clock = pygame.time.Clock()
 running = True
-
+printConstantes()
 read_metamsg(file_midi_path)
+printConstantes()
 MSJS = read_midi(file_midi_path)   
 
 # debuggin manual
-#getMSJS(MSJS) # imprime los msg´s en consola(ya procesados)
+getMSJS(MSJS) # imprime los msg´s en consola(ya procesados)
 
 while running:
     for event in pygame.event.get(): # itera sobre cada evento (movimiento de mouse y precion de tecla)
@@ -305,6 +372,7 @@ while running:
     
     
     if MSJS:
+        
         if MSJS[0][1] <= pygame.time.get_ticks():
             print(f"msg: {MSJS[0][1]}, tick: {pygame.time.get_ticks()}")
             lanzar.append(MSJS[0])
