@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 falta:
-
+- lograr que avancen los rect en relación con los pixeles por tempo y tempo
 - lograr que funciene para cualquier midi no polifónico
 - logra que funcione para midi polifónico
 - lograr que funcione con 4 channels como entrada
+- el height del rect es chico, ver como agrandarlo
 """
 #%%  path cancion
 
@@ -19,7 +20,7 @@ import time
 
 # variables constantes     
 
-
+pase = True
 ANCHO_PANTALLA = 1280    
 ALTO_PANTALLA = 720 
 #colores en rgb
@@ -39,7 +40,7 @@ ALTO_TECLA = ANCHO_TECLA*150/26
 # si son 35 teclas blancas, arrancando de La 50 a la 85
 FINAL_RECORRIDO = 509 # intenté poner algo asi como alto_pantalla-alto_tecla-nota.height, pero no funcionaba. Usmeando encontré que solo reconocía numeros enteros pares.
 # de hecho si asignas a FINAL_RECORRIDO un número impar no funciona. No se porqué todavía.
-
+t_inicio =0
 
 
 #**********Meta mensajes**************
@@ -65,8 +66,8 @@ TEMPO = 0 #una funcion los define a partir de los metamensajes
 # 'midi_port' no lo uso por ahora
 #*********** fin de metamensajes ************************
 
-PIXELES_X_PULSO = 60
-VELOCIDAD = 1 # solo numeros enteros >= 1
+PIXELES_X_PULSO = 20
+VELOCIDAD = 2 # solo numeros enteros >= 1
 PPM = 0 # BPM una funcion lo calcula a partir de los metamensajes
 lanzar = []
 a_encender = []
@@ -198,7 +199,8 @@ def read_midi(file_midi_path):
             for j in MSJS: # busca el mensaje abierto e incompleto en elemento 2 para completarlo
                 if j[0] == track.note and j[2] == 0:
                      j[2]= track.time
-                     ultimo_delta_tiempo = track.time
+                     abre_acu += track.time
+                     #ultimo_delta_tiempo = track.time
                      break
          
         if track.type == "note_on" and track.velocity == 0 and track.time == 0: #cierra nota SIN detalle de tiempo
@@ -220,7 +222,7 @@ def read_midi(file_midi_path):
         # Rect(left, top, width, height) -> Rect
         # Rect(coord x, coord y , ancho figura, alto figura)
         
-        i.append(pygame.Rect(coord_nota_35[i[0]]+1 , PIXELES_X_PULSO * PPM / 60000 * i[2]*-1, ancho_tecla-1, PIXELES_X_PULSO * PPM / 60000 * i[2]))                           
+        i.append(pygame.Rect(coord_nota_35[i[0]]+1 , PIXELES_X_PULSO * -( i[2]/TICKS_PER_BEAT), ancho_tecla-1, PIXELES_X_PULSO * ( i[2]/TICKS_PER_BEAT)))                           
 
 # le agrego el encendido a cada MSJ
 
@@ -292,8 +294,7 @@ for i in tecl_bla:
 for i in tecl_neg:
     diccionario[i] = PrintNoteNeg(i)                
 
-def ticks_a_ms(ticks_midi):
-    return ticks_midi * (60000 / PPM) / TICKS_PER_BEAT
+
 
 # funciones debug
 
@@ -310,11 +311,11 @@ def printConstantes():
     global TIME
     print(f"""
           Final recorrido:            {FINAL_RECORRIDO}
-          Pixeles por segundo:        {PIXELES_X_PULSO}
+          Pixeles por negra:          {PIXELES_X_PULSO}
           Velocidad:                  {VELOCIDAD}                           
           Tempo:                      {TEMPO}          
           PPM:                        {PPM}          
-          Ms por Negra:               {TICKS_PER_BEAT}  
+          Ticks_per_beat: (por negra) {TICKS_PER_BEAT}  
           numerador:                  {NUMERATOR}        
           denominador:                {DENOMINATOR}
           clock_per_click             {CLOCK_PER_CLICK}
@@ -346,17 +347,20 @@ def showOnlyRawMidi(argumento = None):
 
 # pygame setup
 pygame.init()
+tiempo_anterior = pygame.time.get_ticks()
+
 screen = pygame.display.set_mode((ANCHO_PANTALLA,ALTO_PANTALLA))
 clock = pygame.time.Clock()
 running = True
-printConstantes()
+#printConstantes()
 read_metamsg(file_midi_path)
-printConstantes()
+#printConstantes()
 MSJS = read_midi(file_midi_path)   
 
 # debuggin manual
-getMSJS(MSJS) # imprime los msg´s en consola(ya procesados)
+#getMSJS(MSJS) # imprime los msg´s en consola(ya procesados)
 
+tInicio = pygame.time.get_ticks()
 while running:
     for event in pygame.event.get(): # itera sobre cada evento (movimiento de mouse y precion de tecla)
         if event.type == pygame.QUIT:
@@ -368,21 +372,19 @@ while running:
             
         
     screen.fill(BLACK)
-    
-    
-    
+
     if MSJS:
-        
-        if MSJS[0][1] <= pygame.time.get_ticks():
-            print(f"msg: {MSJS[0][1]}, tick: {pygame.time.get_ticks()}")
-            lanzar.append(MSJS[0])
-            MSJS.remove(MSJS[0])
+        for i in MSJS:        
+            if MSJS[0][1] <= (pygame.time.get_ticks() - tInicio):
+                lanzar.append(MSJS[0])
+                MSJS.remove(MSJS[0])
+            else: 
+                break
             
     if lanzar:
         for i in lanzar:
             pygame.draw.rect(screen,COLORS[3],i[4])
             i[4].y += VELOCIDAD
-            
             
             if i[4].top >= FINAL_RECORRIDO - i[4].height:
                 
@@ -410,7 +412,7 @@ while running:
     pygame.display.update()
     pygame.display.flip() # siempre va antes de clock.tick() , no despues
     
-    clock.tick(60)  # limits FPS to 60
+    clock.tick(30)  # limits FPS to 60
 
 pygame.quit()
     
