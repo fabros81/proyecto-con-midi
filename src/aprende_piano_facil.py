@@ -407,17 +407,7 @@ while running:
             if event.key == pygame.K_q:
                 running = False
     
-            if event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS:  # Tecla +
-                AJUSTE_TEMPO_PORCENTAJE = min(200, AJUSTE_TEMPO_PORCENTAJE + 10)  # Máximo 200%
-                print(f"Velocidad: {AJUSTE_TEMPO_PORCENTAJE}%")
-                
-            elif event.key == pygame.K_MINUS:  # Tecla -
-                AJUSTE_TEMPO_PORCENTAJE = max(25, AJUSTE_TEMPO_PORCENTAJE - 10)  # Mínimo 25%
-                print(f"Velocidad: {AJUSTE_TEMPO_PORCENTAJE}%")
-                
-            elif event.key == pygame.K_0:  # Tecla 0 para reset
-                AJUSTE_TEMPO_PORCENTAJE = 100
-                print("Velocidad: 100% (Normal)")            
+                   
             
         
     screen.fill(BLACK)

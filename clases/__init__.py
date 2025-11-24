@@ -1,2 +1,2 @@
-from .config import Config
-from .nota import Nota
+from .Notas import Notas
+from .Config import Config
