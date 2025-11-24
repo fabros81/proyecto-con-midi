@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 falta:
-- lograr que avancen los rect en relación con los pixeles por tempo y tempo
-- lograr que funciene para cualquier midi no polifónico
+- lograr que funcione con 4 channels como entrada maximo , no polifónico
 - logra que funcione para midi polifónico
-- lograr que funcione con 4 channels como entrada
 - el height del rect es chico, ver como agrandarlo
 """
 #%%  path cancion
 
-file_midi_path = "./archivos midi/fc.mid"
-#file_midi_path = "./archivos midi/saxo_1_mano_miqueas_6_8.mid"
+#file_midi_path = "./archivos midi/fc.mid"
+file_midi_path = "./archivos midi/saxo_1_mano_miqueas_6_8.mid"
+#file_midi_path = "./archivos midi/voz_saxo_miqueas_6_8.mid"
 
 
 import pygame
@@ -66,8 +65,19 @@ TEMPO = 0 #una funcion los define a partir de los metamensajes
 # 'midi_port' no lo uso por ahora
 #*********** fin de metamensajes ************************
 
-PIXELES_X_PULSO = 20
-VELOCIDAD = 2 # solo numeros enteros >= 1
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!! PARAMETROS DE CONTROL!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+PULSOS_EN_PANTALLA = 5 # indica cuantos pulsos aparecen en la pantalla antes de ejecutarse.Ej 4, aparecen 4 tiempos en pantalla
+AJUSTE_TEMPO_PORCENTAJE = 100  # 100 = tempo original, 150 = 50% más rápido, 50 = 50% más lento
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+PIXELES_X_PULSO = (ALTO_PANTALLA-ALTO_TECLA)/PULSOS_EN_PANTALLA # alto de la negra en pixeles
+
+
 PPM = 0 # BPM una funcion lo calcula a partir de los metamensajes
 lanzar = []
 a_encender = []
@@ -209,6 +219,9 @@ def read_midi(file_midi_path):
                     j[2] = ultimo_delta_tiempo
                     ultimo_delta_tiempo = 0
                     break
+        if track.is_meta and track.type == 'end_of_track':
+            ## aca tengo que hacer algo porque cambia de channel
+            abre_acu = 0
     
 # le agrego pygame.rect a cada MSJ
     
@@ -309,18 +322,24 @@ def printConstantes():
     global CLOCK_PER_CLICK
     global NOTATED_32ND_NOTES_PER_BEAT
     global TIME
+    global RECORRIDO 
+    global TIEMPO_POR_SEGUNDO
+    global PPS 
+
     print(f"""
           Final recorrido:            {FINAL_RECORRIDO}
           Pixeles por negra:          {PIXELES_X_PULSO}
-          Velocidad:                  {VELOCIDAD}                           
           Tempo:                      {TEMPO}          
           PPM:                        {PPM}          
           Ticks_per_beat: (por negra) {TICKS_PER_BEAT}  
           numerador:                  {NUMERATOR}        
           denominador:                {DENOMINATOR}
-          clock_per_click             {CLOCK_PER_CLICK}
+          clock_per_click:            {CLOCK_PER_CLICK}
           notated_32nd_notes_per_beat {NOTATED_32ND_NOTES_PER_BEAT}
           time: ('time_signature')    {TIME}
+          recorrido (pix)             {RECORRIDO}   
+          tiempo por segundo          {SEGUNDOS_POR_PULSO} 
+          pps                         {PPS}
           """       
     )
  
@@ -345,37 +364,64 @@ def showOnlyRawMidi(argumento = None):
 #%%  bucle principal
 #showOnlyRawMidi() #imprime en consola los mensajes crudos y finaliza el código
 
+def ticks_a_milisegundos(ticks_midi):
+    """Convierte ticks MIDI a milisegundos con ajuste de tempo"""
+    microsegundos_por_pulso = TEMPO / TICKS_PER_BEAT
+    # APLICAR AJUSTE DE TEMPO
+    factor_ajuste = 100.0 / AJUSTE_TEMPO_PORCENTAJE
+    milisegundos_por_tick = (microsegundos_por_pulso / 1000.0) * factor_ajuste
+    return ticks_midi * milisegundos_por_tick
+
 # pygame setup
 pygame.init()
 tiempo_anterior = pygame.time.get_ticks()
 
 screen = pygame.display.set_mode((ANCHO_PANTALLA,ALTO_PANTALLA))
-clock = pygame.time.Clock()
+reloj = pygame.time.Clock()
 running = True
 #printConstantes()
 read_metamsg(file_midi_path)
-#printConstantes()
 MSJS = read_midi(file_midi_path)   
+
+RECORRIDO = (ALTO_PANTALLA-ALTO_TECLA ) # RECORRIDO DE LA NOTA EN PIXELES
+SEGUNDOS_POR_PULSO =  60/PPM # ESTO ES LO QUE DURA UNA NEGRA
+factor_ajuste = 100.0 / AJUSTE_TEMPO_PORCENTAJE  # Aplicar mismo ajuste
+SEGUNDOS_POR_PULSO_AJUSTADO = SEGUNDOS_POR_PULSO * factor_ajuste
+
+PPS = RECORRIDO / (SEGUNDOS_POR_PULSO_AJUSTADO * PULSOS_EN_PANTALLA) #PIXELES POR SEGUNDO para que la velocidad esté a tempo
 
 # debuggin manual
 #getMSJS(MSJS) # imprime los msg´s en consola(ya procesados)
 
+
+#printConstantes()
 tInicio = pygame.time.get_ticks()
 while running:
+    dt_ms = reloj.tick(60)
+    dt_s = dt_ms/1000
+    
+    
     for event in pygame.event.get(): # itera sobre cada evento (movimiento de mouse y precion de tecla)
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 running = False
-            
-            
+    
+                     
         
     screen.fill(BLACK)
 
     if MSJS:
         for i in MSJS:        
+            '''
             if MSJS[0][1] <= (pygame.time.get_ticks() - tInicio):
+                lanzar.append(MSJS[0])
+                MSJS.remove(MSJS[0])
+            else: 
+                break
+            '''
+            if ticks_a_milisegundos(MSJS[0][1]) <= (pygame.time.get_ticks() - tInicio): # me corria al doble de tempo. La ia, me encontro ese error de unidades. no lo entendí todavía
                 lanzar.append(MSJS[0])
                 MSJS.remove(MSJS[0])
             else: 
@@ -384,7 +430,7 @@ while running:
     if lanzar:
         for i in lanzar:
             pygame.draw.rect(screen,COLORS[3],i[4])
-            i[4].y += VELOCIDAD
+            i[4].y += PPS  * dt_s
             
             if i[4].top >= FINAL_RECORRIDO - i[4].height:
                 
@@ -412,7 +458,6 @@ while running:
     pygame.display.update()
     pygame.display.flip() # siempre va antes de clock.tick() , no despues
     
-    clock.tick(30)  # limits FPS to 60
 
 pygame.quit()
     
