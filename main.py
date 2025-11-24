@@ -5,6 +5,7 @@ from mido import MidiFile
 # antes iniciar pygame
 config = cl.Config()
 msj = cl.Notas()
+teclado = cl.Teclado(config.ANCHO_PANTALLA,21,60)
 
 # pygame setup
 pygame.init()
@@ -27,3 +28,4 @@ while running:
     
     screen.fill(config.BLACK)
     
+    teclado.dibujar(screen)
