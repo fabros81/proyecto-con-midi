@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 falta:
+- implementar en POO para 1 channel
 - lograr que funcione con 4 channels como entrada maximo , no polifónico
 - logra que funcione para midi polifónico
 - el height del rect es chico, ver como agrandarlo
+- ver si se puede agregarle música desde pygame directamente
 """
 #%%  path cancion
 
-#file_midi_path = "./archivos midi/fc.mid"
-file_midi_path = "./archivos midi/saxo_1_mano_miqueas_6_8.mid"
+file_midi_path = "./archivos midi/fc.mid"
+#file_midi_path = "./archivos midi/saxo_1_mano_miqueas_6_8.mid"
 #file_midi_path = "./archivos midi/voz_saxo_miqueas_6_8.mid"
 
 
@@ -68,11 +70,8 @@ TEMPO = 0 #una funcion los define a partir de los metamensajes
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #!!!!!! PARAMETROS DE CONTROL!!!!!!!!!!!
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
 PULSOS_EN_PANTALLA = 5 # indica cuantos pulsos aparecen en la pantalla antes de ejecutarse.Ej 4, aparecen 4 tiempos en pantalla
-AJUSTE_TEMPO_PORCENTAJE = 50  # 100 = tempo original, 150 = 50% más rápido, 50 = 50% más lento
+AJUSTE_TEMPO_PORCENTAJE = 100  # 100 = tempo original, 150 = 50% más rápido, 50 = 50% más lento
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 PIXELES_X_PULSO = (ALTO_PANTALLA-ALTO_TECLA)/PULSOS_EN_PANTALLA # alto de la negra en pixeles
@@ -374,7 +373,7 @@ def ticks_a_milisegundos(ticks_midi):
 
 # pygame setup
 pygame.init()
-tiempo_anterior = pygame.time.get_ticks()
+
 
 screen = pygame.display.set_mode((ANCHO_PANTALLA,ALTO_PANTALLA))
 reloj = pygame.time.Clock()
