@@ -7,9 +7,19 @@ from mido import MidiFile
 '''
 
 # antes iniciar pygame
+#file = "./archivos midi/fc.mid"
+#file = "./archivos midi/saxo_1_mano_miqueas_6_8.mid"
+file = "./archivos midi/voz_saxo_miqueas_6_8.mid"
+
+
+
 config = cl.Config()
+archivo = cl.Archivo(file)
 msj = cl.Notas()
-teclado = cl.Teclado(config.ANCHO_PANTALLA,24,84)
+teclado = cl.Teclado(config.ANCHO_PANTALLA,36,95)
+
+#archivo.showOnlyRawMidi()
+archivo.showOnlyRawMidi("note_on",2)
 
 # pygame setup
 pygame.init()

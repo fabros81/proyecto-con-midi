@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 falta:
+- implementar en POO para 1 channel
 - lograr que funcione con 4 channels como entrada maximo , no polifónico
 - logra que funcione para midi polifónico
 - el height del rect es chico, ver como agrandarlo
@@ -144,7 +145,7 @@ coord_nota_35={36:0,
 
 tecl_bla = [36,38,40,41,43,45,47,48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84,86,88,89,91,93,95]
 tecl_neg = [37,39,42,44,46,49,51,54,56,58,61,63,66,68,70,73,75,78,80,82,85,87,90,92,94]  
-#x_tecl_neg = [ int(coord_nota_35[i]) for i in tecl_neg]
+x_tecl_neg = [ int(coord_nota_35[i]) for i in tecl_neg]
 
 
 # funciones
@@ -406,7 +407,17 @@ while running:
             if event.key == pygame.K_q:
                 running = False
     
-                   
+            if event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS:  # Tecla +
+                AJUSTE_TEMPO_PORCENTAJE = min(200, AJUSTE_TEMPO_PORCENTAJE + 10)  # Máximo 200%
+                print(f"Velocidad: {AJUSTE_TEMPO_PORCENTAJE}%")
+                
+            elif event.key == pygame.K_MINUS:  # Tecla -
+                AJUSTE_TEMPO_PORCENTAJE = max(25, AJUSTE_TEMPO_PORCENTAJE - 10)  # Mínimo 25%
+                print(f"Velocidad: {AJUSTE_TEMPO_PORCENTAJE}%")
+                
+            elif event.key == pygame.K_0:  # Tecla 0 para reset
+                AJUSTE_TEMPO_PORCENTAJE = 100
+                print("Velocidad: 100% (Normal)")            
             
         
     screen.fill(BLACK)

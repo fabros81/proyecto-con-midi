@@ -32,12 +32,11 @@ class Teclado:
         #print(f"mapa completo: {mapa}, ancho tecla blanca: {self.ancho_tecla_blanca}")        
         return mapa
         
-    
     def _crear_lista_teclas(self, nota_min, nota_max):
         teclas_blancas = []
         teclas_negras = []
         for nota in range(nota_min, nota_max + 1):
-            # Determinar color según tipo de tecla
+            
             if nota % 12 in [0,2,4,5,7,9,11]:
                 color = self.config.WHITE
                 tecla = Tecla(nota, self.coordenadaX[nota],self.ancho_tecla_blanca-1,self.alto_tecla_blanca, color)
@@ -48,8 +47,6 @@ class Teclado:
                 teclas_negras.append(tecla)
         return teclas_blancas, teclas_negras
     
-
-
     def dibujar(self, pantalla):
         # Teclas blancas
         for tecla in self.teclas_blancas:
