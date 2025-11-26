@@ -19,7 +19,7 @@ msj = cl.Notas()
 teclado = cl.Teclado(config.ANCHO_PANTALLA,36,95)
 
 #archivo.showOnlyRawMidi()
-archivo.showOnlyRawMidi("note_on",2)
+archivo.showOnlyRawMidi("note_on",1)
 
 # pygame setup
 pygame.init()
