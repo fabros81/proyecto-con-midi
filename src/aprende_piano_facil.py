@@ -71,7 +71,7 @@ TEMPO = 0 #una funcion los define a partir de los metamensajes
 #!!!!!! PARAMETROS DE CONTROL!!!!!!!!!!!
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 PULSOS_EN_PANTALLA = 5 # indica cuantos pulsos aparecen en la pantalla antes de ejecutarse.Ej 4, aparecen 4 tiempos en pantalla
-AJUSTE_TEMPO_PORCENTAJE = 100  # 100 = tempo original, 150 = 50% más rápido, 50 = 50% más lento
+AJUSTE_TEMPO_PORCENTAJE = 1  # 1 = tempo original, 1.5 = 50% más rápido, 0.50 = 50% más lento
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 PIXELES_X_PULSO = (ALTO_PANTALLA-ALTO_TECLA)/PULSOS_EN_PANTALLA # alto de la negra en pixeles
@@ -367,7 +367,7 @@ def ticks_a_milisegundos(ticks_midi):
     """Convierte ticks MIDI a milisegundos con ajuste de tempo"""
     microsegundos_por_pulso = TEMPO / TICKS_PER_BEAT
     # APLICAR AJUSTE DE TEMPO
-    factor_ajuste = 100.0 / AJUSTE_TEMPO_PORCENTAJE
+    factor_ajuste = AJUSTE_TEMPO_PORCENTAJE
     milisegundos_por_tick = (microsegundos_por_pulso / 1000.0) * factor_ajuste
     return ticks_midi * milisegundos_por_tick
 
