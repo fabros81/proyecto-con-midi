@@ -24,11 +24,6 @@ msj = cl.Mensajes(config,archivo,teclado)
 #archivo.showOnlyRawMidi('note_on',1) # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
 #msj.printMsj1()
 
-<<<<<<< HEAD
-#archivo.showOnlyRawMidi()
-archivo.showOnlyRawMidi("note_on",1)
-=======
->>>>>>> af3735f
 
 # pygame setup
 pygame.init()
