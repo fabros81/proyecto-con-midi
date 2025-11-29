@@ -27,9 +27,11 @@ class Config:
         
         self.ANCHO_TECLA_BLANCA = None
         self.ALTO_TECLA_BLANCA = None
+        self.ANCHO_TECLA_NEGRA = None
         
         self.PIXELES_X_PULSO = None
         self.TICKS_PER_BEAT = None
+        self.COORDENADAX = None
         
     def actualizar_tempo(self, nuevo_tempo):
         self.AJUSTE_TEMPO = nuevo_tempo
@@ -50,9 +52,9 @@ class Config:
         self.NOTATED_32ND_NOTES_PER_BEAT = notated32
         self.TIME = time
         
-    def setAnchoTeclaBlanca(self, ancho):
-        self.ANCHO_TECLA_BLANCA = ancho
-        
+    def setAnchoTecla(self, ancho_bla, ancho_neg):
+        self.ANCHO_TECLA_BLANCA = ancho_bla
+        self.ANCHO_TECLA_NEGRA = ancho_neg
     def setAltoTeclaBlanca(self,alto):
         self.ALTO_TECLA_BLANCA = alto
         
@@ -61,6 +63,9 @@ class Config:
     
     def setPixelesPorPulso(self):
         self.PIXELES_X_PULSO = int((self.ALTO_PANTALLA - self.ALTO_TECLA_BLANCA)/ self.PULSOS_PANTALLA)
+        
+    def setCoordenadaX(self,coordx):
+        self.COORDENADAX = coordx
         
     def verAtributosEnNone(self):
         for attr, value in vars(self).items():

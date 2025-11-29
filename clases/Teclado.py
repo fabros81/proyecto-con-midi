@@ -14,10 +14,10 @@ class Teclado:
         self.alto_tecla_negra = int(self.alto_tecla_blanca *95/150)
         self.teclas_blancas, self.teclas_negras = self._crear_lista_teclas(nota_min, nota_max) 
         self.config.setFinalRecorrido(self.alto_tecla_blanca)
-        self.config.setAnchoTeclaBlanca(self.ancho_tecla_blanca)
+        self.config.setAnchoTecla(self.ancho_tecla_blanca,self.ancho_tecla_negra)
         self.config.setAltoTeclaBlanca(self.alto_tecla_blanca)
         self.config.setPixelesPorPulso()
-               
+        self.config.setCoordenadaX(self.coordenadaX)               
     def _calcular_ancho_tecla_blanca(self,ancho_pantalla, nota_min,nota_max):
         cant_teclas_blancas = len([n for n in range(nota_min, nota_max+1) if n % 12 in [0,2,4,5,7,9,11]])
         ancho_tecla = ancho_pantalla / cant_teclas_blancas
@@ -68,5 +68,4 @@ class Teclado:
             alto = tecla.alto
             pygame.draw.rect(pantalla, tecla.mostrarColor, (x, y, ancho, alto))
                 
-    def x(self,nota):
-        return self.coordenadaX[nota]
+    

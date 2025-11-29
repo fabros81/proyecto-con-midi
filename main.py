@@ -17,13 +17,13 @@ file = "./archivos midi/fc.mid"
 config = cl.Config() # config se instancia antes de teclado obligatoriamente
 archivo = cl.Archivo(config, file)
 teclado = cl.Teclado(config,36,95)
-msj = cl.Mensajes(config,archivo,teclado)
+msj = cl.Mensajes(config,archivo)
 #config.verAtributosEnNone()
 
 # herramientas para ver mensajes
 
-#archivo.showOnlyRawMidi('note_on',1) # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
-msj.printMsj1()
+archivo.showOnlyRawMidi('note_on',1) # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
+#msj.printMsj1() 
 
 
 # pygame setup

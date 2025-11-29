@@ -2,10 +2,9 @@ import pygame
 from .Nota import Nota
 
 class Mensajes:
-    def __init__(self,config,archivo,teclado):
+    def __init__(self,config,archivo):
         self.c = config
         self.mid = archivo.mid
-        self.t = teclado
         self.msj1 = self._msj(self.mid)# lista de objetos Nota
         self.lanzar = []
         self._read_metamsg(self.mid)        
@@ -62,9 +61,7 @@ class Mensajes:
                 
         salida =[]
         MSJS = []
-        
-        TICKS_PER_BEAT = self.mid.ticks_per_beat
-        
+                
         abre_acu = 0 # esta en tick´s
         ultimo_delta_tiempo = 0 #cuando hay polifonía los msjs midi se pueden cerrar en un mismo tiempo varias notas. Solo la primer nota de ese tiempo acumulado lleva valor de duración , el resto no lo tiene
         for i, track in enumerate(self.mid.tracks[0]):
@@ -99,9 +96,9 @@ class Mensajes:
             # Rect(left, top, width, height) -> Rect
             # Rect(coord x, coord y , ancho figura, alto figura)
             if i[0] % 12 in [0,2,4,5,7,9,11]:
-                i.append(pygame.Rect(self.t.x(i[0])+1 , self.c.PIXELES_X_PULSO * -( i[2]/TICKS_PER_BEAT), self.t.ancho_tecla_blanca -1, self.c.PIXELES_X_PULSO * ( i[2]/TICKS_PER_BEAT)))
+                i.append(pygame.Rect(self.c.COORDENADAX[i[0]]+1 , self.c.PIXELES_X_PULSO * -( i[2]/self.c.TICKS_PER_BEAT), self.c.ANCHO_TECLA_BLANCA -1, self.c.PIXELES_X_PULSO * ( i[2]/self.c.TICKS_PER_BEAT)))
             else:
-                i.append(pygame.Rect(self.t.x(i[0])+1 , self.c.PIXELES_X_PULSO * -( i[2]/TICKS_PER_BEAT), self.t.ancho_tecla_negra -1, self.c.PIXELES_X_PULSO * ( i[2]/TICKS_PER_BEAT)))
+                i.append(pygame.Rect(self.c.COORDENADAX[i[0]]+1 , self.c.PIXELES_X_PULSO * -( i[2]/self.c.TICKS_PER_BEAT), self.c.ANCHO_TECLA_NEGRA -1, self.c.PIXELES_X_PULSO * ( i[2]/self.c.TICKS_PER_BEAT)))
         
         # le agrego el valor de encendido a cada MSJ. Tiene que ser FINAL_RECORRIDO - el alto del rect
 
