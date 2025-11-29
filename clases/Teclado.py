@@ -27,13 +27,13 @@ class Teclado:
         mapa = {}
         patron_octava = [0, 12/23, 1, 40/23, 2, 3, 80/23, 4, 108/23, 5, 136/23, 6]
         for nota in range (nota_min,nota_max +1):
-            #teclas_blancas = [n for n in range(nota_min, nota_max+1) if n % 12 in [0,2,4,5,7,9,11]]
+            
             octava = (nota - nota_min)  // 12
             pos = (nota - nota_min) % 12
             x = octava *(7* self.ancho_tecla_blanca) + (self.ancho_tecla_blanca * patron_octava[pos])
             mapa[nota] = int(x)
-            #print(f"nota: {nota}, octava: {octava}, x:{x} ")        
-        #print(f"mapa completo: {mapa}, ancho tecla blanca: {self.ancho_tecla_blanca}")        
+                   
+        
         return mapa
         
     def _crear_lista_teclas(self, nota_min, nota_max):
@@ -67,9 +67,8 @@ class Teclado:
     def Encender(self,nota):
         
         if nota % 12 in [0,2,4,5,7,9,11]:
-            print(self.teclas_blancas[nota].mostrarColor)
             self.teclas_blancas[nota].Encender()
-            print(self.teclas_blancas[nota].mostrarColor)
+            
         else:
             self.teclas_negras[nota].Encender()
         

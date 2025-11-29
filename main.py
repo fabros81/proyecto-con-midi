@@ -2,9 +2,7 @@ import clases as cl
 import pygame
 from mido import MidiFile
 
-'''
 
-'''
 
 # antes iniciar pygame
 file = "./archivos midi/fc.mid"
@@ -23,7 +21,7 @@ msj = cl.Mensajes(config,archivo, teclado)
 # herramientas para ver mensajes
 
 #archivo.showOnlyRawMidi('note_on') # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
-#msj.printMsj1() 
+msj.printMsj1() 
 
 
 # pygame setup

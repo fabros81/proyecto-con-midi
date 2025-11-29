@@ -13,7 +13,8 @@ class Mensajes:
     # toma cada mensaje de Archivo.mi lo mete en una instancia de Nota y genera las 4 listas de reproducción.
     def printMsj1(self): 
         for i in self.msj1:
-            print(i.nota)
+            print(f"pixeles por negra: {self.c.PIXELES_X_PULSO}")
+            print(f"msj: (nota: {i.nota}, abreAcu:{i.abreAcu},cierra (tick): {i.duracion}, channel: {i.channel},rect.height: {i.objeto.height}, etc")
     
     def ticks_a_ms(self, ticks_midi):
         """Convierte ticks MIDI a milisegundos con ajuste de tempo"""
@@ -104,6 +105,7 @@ class Mensajes:
             # Rect(coord x, coord y , ancho figura, alto figura)
             if i[0] % 12 in [0,2,4,5,7,9,11]:
                 i.append(pygame.Rect(self.c.COORDENADAX[i[0]]+1 , self.c.PIXELES_X_PULSO * -( i[2]/self.c.TICKS_PER_BEAT), self.c.ANCHO_TECLA_BLANCA -1, self.c.PIXELES_X_PULSO * ( i[2]/self.c.TICKS_PER_BEAT)))
+                
             else:
                 i.append(pygame.Rect(self.c.COORDENADAX[i[0]]+1 , self.c.PIXELES_X_PULSO * -( i[2]/self.c.TICKS_PER_BEAT), self.c.ANCHO_TECLA_NEGRA -1, self.c.PIXELES_X_PULSO * ( i[2]/self.c.TICKS_PER_BEAT)))
         
