@@ -15,11 +15,11 @@ class Mensajes:
         for i in self.msj1:
             print(i.nota)
     
-    def ticks_a_milisegundos(self, ticks_midi):
+    def ticks_a_ms(self, ticks_midi):
         """Convierte ticks MIDI a milisegundos con ajuste de tempo"""
         microsegundos_por_pulso = self.c.TEMPO / self.c.TICKS_PER_BEAT
         # APLICAR AJUSTE DE TEMPO
-        factor_ajuste = self.c.AJUSTE_TEMPO
+        factor_ajuste = self.c.AJUSTE_TEMPO/100
         milisegundos_por_tick = (microsegundos_por_pulso / 1000.0) * factor_ajuste
         return ticks_midi * milisegundos_por_tick
     
@@ -125,7 +125,7 @@ class Mensajes:
         
     def dibujar(self,pantalla):
         if (len(self.msj1) >0):
-            if self.msj1[0].abreAcu <= (pygame.time.get_ticks()):
+            if self.ticks_a_ms(self.msj1[0].abreAcu) <= (pygame.time.get_ticks()- self.c.TIEMPO_INICIO):
                 self.lanzar.append(self.msj1[0])               
                 self.msj1.remove(self.msj1[0])
         for i in self.lanzar:
