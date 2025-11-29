@@ -3,17 +3,20 @@ from .Tecla import Tecla
 import pygame
 
 class Teclado:
-    def __init__(self, config ,ancho_pantalla, nota_min=21, nota_max=108):
+    def __init__(self, config , nota_min=21, nota_max=108):
         if nota_min not in [24, 36, 48, 60, 72, 84, 96, 108 ] or nota_max >108 or  nota_max % 12 not in [0,2,4,5,7,9,11] :
             raise "rango de teclado inválido. nota minima tiene que ser una de las siguientes [24, 36, 48, 60, 72, 84, 96, 108].La nota máxima es < 108"
         self.config = config
-        self.ancho_tecla_blanca =self._calcular_ancho_tecla_blanca(ancho_pantalla,nota_min,nota_max)
+        self.ancho_tecla_blanca =self._calcular_ancho_tecla_blanca(config.ANCHO_PANTALLA, nota_min,nota_max)
         self.coordenadaX = self._generar_mapa_teclas(nota_min, nota_max)
         self.ancho_tecla_negra = int(16/26 * self.ancho_tecla_blanca)
         self.alto_tecla_blanca = int(self.ancho_tecla_blanca * 150/26)
         self.alto_tecla_negra = int(self.alto_tecla_blanca *95/150)
         self.teclas_blancas, self.teclas_negras = self._crear_lista_teclas(nota_min, nota_max) 
         self.config.setFinalRecorrido(self.alto_tecla_blanca)
+        self.config.setAnchoTeclaBlanca(self.ancho_tecla_blanca)
+        self.config.setAltoTeclaBlanca(self.alto_tecla_blanca)
+        self.config.setPixelesPorPulso()
                
     def _calcular_ancho_tecla_blanca(self,ancho_pantalla, nota_min,nota_max):
         cant_teclas_blancas = len([n for n in range(nota_min, nota_max+1) if n % 12 in [0,2,4,5,7,9,11]])

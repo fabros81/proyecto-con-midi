@@ -15,14 +15,15 @@ file = "./archivos midi/fc.mid"
 # Cambiar el orden de instanciación causa problemas, no modificarlo!!! (orden: config,archivo,teclado,msj)
 
 config = cl.Config() # config se instancia antes de teclado obligatoriamente
-archivo = cl.Archivo(file)
-teclado = cl.Teclado(config, config.ANCHO_PANTALLA,36,95)
+archivo = cl.Archivo(config, file)
+teclado = cl.Teclado(config,36,95)
 msj = cl.Mensajes(config,archivo,teclado)
+#config.verAtributosEnNone()
 
 # herramientas para ver mensajes
 
 #archivo.showOnlyRawMidi('note_on',1) # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
-#msj.printMsj1()
+msj.printMsj1()
 
 
 # pygame setup
@@ -49,8 +50,9 @@ while running:
     screen.fill(config.BLACK)
     
     
-    msj.dibujar(screen,tInicio,dt_s)
+    #msj.dibujar(screen,tInicio,dt_s)
     teclado.dibujar(screen)
+    #msj.actualizar(tInicio,dt_s)
     
     
     pygame.display.update()

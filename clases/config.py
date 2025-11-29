@@ -25,6 +25,11 @@ class Config:
         self.NOTATED_32ND_NOTES_PER_BEAT = None
         self.TIME = None
         
+        self.ANCHO_TECLA_BLANCA = None
+        self.ALTO_TECLA_BLANCA = None
+        
+        self.PIXELES_X_PULSO = None
+        self.TICKS_PER_BEAT = None
         
     def actualizar_tempo(self, nuevo_tempo):
         self.AJUSTE_TEMPO = nuevo_tempo
@@ -44,3 +49,25 @@ class Config:
         self.CLOCK_PER_CLICK = clock
         self.NOTATED_32ND_NOTES_PER_BEAT = notated32
         self.TIME = time
+        
+    def setAnchoTeclaBlanca(self, ancho):
+        self.ANCHO_TECLA_BLANCA = ancho
+        
+    def setAltoTeclaBlanca(self,alto):
+        self.ALTO_TECLA_BLANCA = alto
+        
+    def setTickPerBeat(self,tick) :
+        self.TICKS_PER_BEAT = tick
+    
+    def setPixelesPorPulso(self):
+        self.PIXELES_X_PULSO = int((self.ALTO_PANTALLA - self.ALTO_TECLA_BLANCA)/ self.PULSOS_PANTALLA)
+        
+    def verAtributosEnNone(self):
+        for attr, value in vars(self).items():
+            if value is None:
+                print(f"!!!!!!!!!!!!!!!!!!⚠️ {attr} es None!!!!!!!!!!!!!!!!!!!!!!!!!")
+            else:
+                print(f"{attr}: {value}") 
+                
+        quit()
+    

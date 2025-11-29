@@ -11,9 +11,9 @@ class Mensajes:
         self._read_metamsg(self.mid)        
     
     # toma cada mensaje de Archivo.mi lo mete en una instancia de Nota y genera las 4 listas de reproducción.
-    def printMsj1(self):
+    def printMsj1(self): 
         for i in self.msj1:
-            print(i)
+            print(i.nota)
     
     
     def _read_metamsg(self, mid):
@@ -62,7 +62,7 @@ class Mensajes:
                 
         salida =[]
         MSJS = []
-        PIXELES_X_PULSO = (self.c.ALTO_PANTALLA - self.t.ancho_tecla_blanca)/self.c.PULSOS_PANTALLA
+        
         TICKS_PER_BEAT = self.mid.ticks_per_beat
         
         abre_acu = 0 # esta en tick´s
@@ -99,9 +99,9 @@ class Mensajes:
             # Rect(left, top, width, height) -> Rect
             # Rect(coord x, coord y , ancho figura, alto figura)
             if i[0] % 12 in [0,2,4,5,7,9,11]:
-                i.append(pygame.Rect(self.t.x(i[0])+1 , PIXELES_X_PULSO * -( i[2]/TICKS_PER_BEAT), self.t.ancho_tecla_blanca -1, PIXELES_X_PULSO * ( i[2]/TICKS_PER_BEAT)))
+                i.append(pygame.Rect(self.t.x(i[0])+1 , self.c.PIXELES_X_PULSO * -( i[2]/TICKS_PER_BEAT), self.t.ancho_tecla_blanca -1, self.c.PIXELES_X_PULSO * ( i[2]/TICKS_PER_BEAT)))
             else:
-                i.append(pygame.Rect(self.t.x(i[0])+1 , PIXELES_X_PULSO * -( i[2]/TICKS_PER_BEAT), self.t.ancho_tecla_negra -1, PIXELES_X_PULSO * ( i[2]/TICKS_PER_BEAT)))
+                i.append(pygame.Rect(self.t.x(i[0])+1 , self.c.PIXELES_X_PULSO * -( i[2]/TICKS_PER_BEAT), self.t.ancho_tecla_negra -1, self.c.PIXELES_X_PULSO * ( i[2]/TICKS_PER_BEAT)))
         
         # le agrego el valor de encendido a cada MSJ. Tiene que ser FINAL_RECORRIDO - el alto del rect
 

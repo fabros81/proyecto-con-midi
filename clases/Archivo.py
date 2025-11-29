@@ -1,12 +1,12 @@
 from mido import MidiFile
 
 class Archivo:
-    def __init__(self, file):
-        
+    def __init__(self, config,file):
+        self.config = config
         self.file_name = file
         self.byte = file
         self.mid = MidiFile (self.file_name)
-        
+        config.setTickPerBeat(self.mid.ticks_per_beat)
         
 
     def showOnlyRawMidi(self,argumento = None, channel = None):
