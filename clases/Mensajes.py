@@ -132,13 +132,13 @@ class Mensajes:
             pygame.draw.rect(pantalla, self.c.RED, i.objeto)
         
     def actualizar(self):
-        for i in self.lanzar:
+        for i in self.lanzar: # se lanzan objetos notas
             i.objeto.y += 5
-            #if i.objeto.bottom >= self.c.FINAL_RECORRIDO:
-               # self.t.Encender(i.nota)
+            if i.objeto.bottom >= self.c.FINAL_RECORRIDO:
+                self.t.Encender(i.nota)
                 
             if i.objeto.y > self.c.FINAL_RECORRIDO :
-                #self.t.Apagar(i.nota)
+                self.t.Apagar(i.nota)
                 self.lanzar.remove(i)
             
             

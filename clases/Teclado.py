@@ -57,17 +57,25 @@ class Teclado:
     def dibujar(self, pantalla):
         # Teclas blancas
         for tecla in self.teclas_blancas:
-            pygame.draw.rect(pantalla, self.teclas_blancas[tecla].color, self.teclas_blancas[tecla].rect) #!!!!!!!!!!!!!
+            pygame.draw.rect(pantalla, self.teclas_blancas[tecla].mostrarColor, self.teclas_blancas[tecla].rect) #!!!!!!!!!!!!!
         
         # Teclas negras (más pequeñas)
         for tecla in self.teclas_negras:
-            pygame.draw.rect(pantalla, self.teclas_negras[tecla].color, self.teclas_negras[tecla].rect)
+            pygame.draw.rect(pantalla, self.teclas_negras[tecla].mostrarColor, self.teclas_negras[tecla].rect)
                 
-    '''
+    
     def Encender(self,nota):
+        
         if nota % 12 in [0,2,4,5,7,9,11]:
-            
+            print(self.teclas_blancas[nota].mostrarColor)
+            self.teclas_blancas[nota].Encender()
+            print(self.teclas_blancas[nota].mostrarColor)
+        else:
+            self.teclas_negras[nota].Encender()
         
     def Apagar(self,nota):
-        None
-    '''
+        if nota % 12 in [0,2,4,5,7,9,11]:
+            self.teclas_blancas[nota].Apagar()
+        else:
+            self.teclas_negras[nota].Apagar()
+    
