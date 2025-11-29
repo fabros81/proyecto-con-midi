@@ -12,10 +12,10 @@ class Teclado:
         self.ancho_tecla_negra = int(16/26 * self.ancho_tecla_blanca)
         self.alto_tecla_blanca = int(self.ancho_tecla_blanca * 150/26)
         self.alto_tecla_negra = int(self.alto_tecla_blanca *95/150)
-        self.teclas_blancas, self.teclas_negras = self._crear_lista_teclas(nota_min, nota_max) 
-        self.config.setFinalRecorrido(self.alto_tecla_blanca)
         self.config.setAnchoTecla(self.ancho_tecla_blanca,self.ancho_tecla_negra)
         self.config.setAltoTeclaBlanca(self.alto_tecla_blanca)
+        self.config.setFinalRecorrido()
+        self.teclas_blancas, self.teclas_negras = self._crear_lista_teclas(nota_min, nota_max) #no cambiar el orden , esta encadenado con otros procesos
         self.config.setPixelesPorPulso()
         self.config.setCoordenadaX(self.coordenadaX)               
     def _calcular_ancho_tecla_blanca(self,ancho_pantalla, nota_min,nota_max):
@@ -37,35 +37,37 @@ class Teclado:
         return mapa
         
     def _crear_lista_teclas(self, nota_min, nota_max):
-        teclas_blancas = []
-        teclas_negras = []
+        teclas_blancas = {}
+        teclas_negras = {}
         for nota in range(nota_min, nota_max + 1):
             
             if nota % 12 in [0,2,4,5,7,9,11]:
                 color = self.config.WHITE
-                tecla = Tecla(nota, self.coordenadaX[nota],self.ancho_tecla_blanca-1,self.alto_tecla_blanca, color)
-                teclas_blancas.append(tecla)
+                t = Tecla(nota, self.coordenadaX[nota],self.ancho_tecla_blanca-1,self.alto_tecla_blanca, color)
+                t.set_rect(self.config.FINAL_RECORRIDO)
+                teclas_blancas[nota] = t
+                
             else :
                 color = self.config.BLACK
-                tecla = Tecla(nota, self.coordenadaX[nota],self.ancho_tecla_negra,self.alto_tecla_negra, color)
-                teclas_negras.append(tecla)
+                t = Tecla(nota, self.coordenadaX[nota],self.ancho_tecla_negra,self.alto_tecla_negra, color)
+                t.set_rect(self.config.FINAL_RECORRIDO)
+                teclas_negras[nota] = t
         return teclas_blancas, teclas_negras
     
     def dibujar(self, pantalla):
         # Teclas blancas
         for tecla in self.teclas_blancas:
-            x = tecla.coordX
-            y = pantalla.get_height() - self.alto_tecla_blanca
-            ancho = tecla.ancho
-            alto = tecla.alto
-            pygame.draw.rect(pantalla, tecla.mostrarColor, (x, y, ancho, alto))
+            pygame.draw.rect(pantalla, self.teclas_blancas[tecla].color, self.teclas_blancas[tecla].rect) #!!!!!!!!!!!!!
         
         # Teclas negras (más pequeñas)
         for tecla in self.teclas_negras:
-            x = tecla.coordX
-            y = pantalla.get_height() - self.alto_tecla_blanca
-            ancho = tecla.ancho
-            alto = tecla.alto
-            pygame.draw.rect(pantalla, tecla.mostrarColor, (x, y, ancho, alto))
+            pygame.draw.rect(pantalla, self.teclas_negras[tecla].color, self.teclas_negras[tecla].rect)
                 
-    
+    '''
+    def Encender(self,nota):
+        if nota % 12 in [0,2,4,5,7,9,11]:
+            
+        
+    def Apagar(self,nota):
+        None
+    '''

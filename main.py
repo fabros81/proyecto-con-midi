@@ -17,12 +17,12 @@ file = "./archivos midi/fc.mid"
 config = cl.Config() # config se instancia antes de teclado obligatoriamente
 archivo = cl.Archivo(config, file)
 teclado = cl.Teclado(config,36,95)
-msj = cl.Mensajes(config,archivo)
+msj = cl.Mensajes(config,archivo, teclado)
 #config.verAtributosEnNone()
 
 # herramientas para ver mensajes
 
-archivo.showOnlyRawMidi('note_on',1) # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
+#archivo.showOnlyRawMidi('note_on') # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
 #msj.printMsj1() 
 
 
@@ -34,7 +34,8 @@ running = True
 
 
 
-tInicio = pygame.time.get_ticks()
+
+config.setTiempoInicio()
 while running:
     dt_ms = reloj.tick(60)
     dt_s = dt_ms/1000
@@ -50,9 +51,9 @@ while running:
     screen.fill(config.BLACK)
     
     
-    #msj.dibujar(screen,tInicio,dt_s)
+    msj.dibujar(screen)
     teclado.dibujar(screen)
-    #msj.actualizar(tInicio,dt_s)
+    msj.actualizar()
     
     
     pygame.display.update()

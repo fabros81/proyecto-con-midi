@@ -2,9 +2,10 @@ import pygame
 from .Nota import Nota
 
 class Mensajes:
-    def __init__(self,config,archivo):
+    def __init__(self,config,archivo, teclado):
         self.c = config
         self.mid = archivo.mid
+        self.t = teclado
         self.msj1 = self._msj(self.mid)# lista de objetos Nota
         self.lanzar = []
         self._read_metamsg(self.mid)        
@@ -14,6 +15,13 @@ class Mensajes:
         for i in self.msj1:
             print(i.nota)
     
+    def ticks_a_milisegundos(self, ticks_midi):
+        """Convierte ticks MIDI a milisegundos con ajuste de tempo"""
+        microsegundos_por_pulso = self.c.TEMPO / self.c.TICKS_PER_BEAT
+        # APLICAR AJUSTE DE TEMPO
+        factor_ajuste = self.c.AJUSTE_TEMPO
+        milisegundos_por_tick = (microsegundos_por_pulso / 1000.0) * factor_ajuste
+        return ticks_midi * milisegundos_por_tick
     
     def _read_metamsg(self, mid):
         '''
@@ -42,7 +50,6 @@ class Mensajes:
                         NOTATED_32ND_NOTES_PER_BEAT = msg.notated_32nd_notes_per_beat
                         TIME = msg.time
         self.c.setMetamsg(TICKS_PER_BEAT,TEMPO,PPM,NUMERATOR,DENOMINATOR,CLOCK_PER_CLICK,NOTATED_32ND_NOTES_PER_BEAT,TIME)
-                
             
     def _msj(self,mid):
         '''
@@ -115,18 +122,31 @@ class Mensajes:
         
             
         return salida        
-
-    
         
-    def dibujar(self,pantalla, tInicio,dt_s):
-        if self.msj1:
-            for i in self.msj1:        
-                if i.nota <= (pygame.time.get_ticks() - tInicio):
-                    self.lanzar.append(i)
-                    self.msj1.remove(i)
-                else: 
-                    break
+    def dibujar(self,pantalla):
+        if (len(self.msj1) >0):
+            if self.msj1[0].abreAcu <= (pygame.time.get_ticks()):
+                self.lanzar.append(self.msj1[0])               
+                self.msj1.remove(self.msj1[0])
         for i in self.lanzar:
-            return pygame.draw.rect(pantalla, i.color, i.objeto )
+            pygame.draw.rect(pantalla, self.c.RED, i.objeto)
+        
+    def actualizar(self):
+        for i in self.lanzar:
+            i.objeto.y += 5
+            #if i.objeto.bottom >= self.c.FINAL_RECORRIDO:
+               # self.t.Encender(i.nota)
+                
+            if i.objeto.y > self.c.FINAL_RECORRIDO :
+                #self.t.Apagar(i.nota)
+                self.lanzar.remove(i)
+            
+            
+        
+            
+            
+            
+        
+        
 
         

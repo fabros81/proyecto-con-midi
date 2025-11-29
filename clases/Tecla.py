@@ -4,7 +4,7 @@ import pygame
 class Tecla():
     def __init__(self, note,x,ancho,alto, color):
         self.note = note
-        self.coordX = x
+        self.coordX = x 
         self.ancho = ancho
         self.alto = alto
         self.encendido = False
@@ -13,13 +13,14 @@ class Tecla():
         self.config = Config()
         self.rect = None
     
-    def set_rect(self, x, y, ancho, alto):
-        self.rect = pygame.Rect(x, y, ancho, alto)
+    def set_rect(self,y):
+        objeto_rect = pygame.Rect(self.coordX,y, self.ancho, self.alto)
+        self.rect = objeto_rect 
                 
-    def setEncender(self):
+    def Encender(self):
         self.mostrarColor = self.config.GREEN
         
-    def setApagar(self):
+    def Apagar(self):
         self.mostrarColor = self.color
         
     
