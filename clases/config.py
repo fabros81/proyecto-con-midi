@@ -5,7 +5,7 @@ class Config:
         self.ANCHO_PANTALLA = 1280
         self.ALTO_PANTALLA = 720
         self.PULSOS_PANTALLA = 5 # indica cuantos pulsos aparecen en la pantalla antes de ejecutarse.Ej 4, aparecen 4 tiempos en pantalla
-        self.AJUSTE_TEMPO = 100 #valor porcentual. 1 = tempo original, 1.5 = 50% más rápido, 0.5 = 50% más lento
+        self.AJUSTE_TEMPO = 100  #valor porcentual. 1 = tempo original, 1.5 = 50% más rápido, 0.5 = 50% más lento
         self.COLORS = [(255,0,0), (0,0,255)]
         self.BLACK = (0,0,0)
         self.WHITE = (255,255,255)
@@ -36,6 +36,9 @@ class Config:
         
         self.TIEMPO_INICIO = None
         self.FINAL_RECORRIDO = None
+        self.DT_ms = None
+        self.DT_s = None
+        self.PPS = None #velocidad de caida de notas
         
     def actualizar_tempo(self, nuevo_tempo):
         self.AJUSTE_TEMPO = nuevo_tempo
@@ -73,6 +76,13 @@ class Config:
         
     def setTiempoInicio(self):
         self.TIEMPO_INICIO = pygame.time.get_ticks()
+        
+    def dt(self,reloj):
+        self.DT_ms = reloj.tick(60)
+        self.DT_s = self.DT_ms /1000
+        
+    def velocidadCaida(self):
+        self.PPS = self.FINAL_RECORRIDO / ((60.0 / self.PPM) * (100.0 / self.AJUSTE_TEMPO) * self.PULSOS_PANTALLA)
         
     def verAtributosEnNone(self):
         for attr, value in vars(self).items():

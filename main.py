@@ -16,12 +16,12 @@ config = cl.Config() # config se instancia antes de teclado obligatoriamente
 archivo = cl.Archivo(config, file)
 teclado = cl.Teclado(config,36,95)
 msj = cl.Mensajes(config,archivo, teclado)
-#config.verAtributosEnNone()
 
 # herramientas para ver mensajes
 
 #archivo.showOnlyRawMidi('note_on') # sintaxis: tipo de mensaje: 'note_on' or None, channel: None or [1,2,3,4]) 
-msj.printMsj1() 
+#msj.printMsj1() 
+#config.verAtributosEnNone()
 
 
 # pygame setup
@@ -29,26 +29,24 @@ pygame.init()
 screen = pygame.display.set_mode((config.ANCHO_PANTALLA,config.ALTO_PANTALLA))
 reloj = pygame.time.Clock()
 running = True
+config.velocidadCaida()
 
 
 
 
 config.setTiempoInicio()
 while running:
-    dt_ms = reloj.tick(60)
-    dt_s = dt_ms/1000
-    
+    config.dt(reloj)
+        
     for event in pygame.event.get(): # itera sobre cada evento (movimiento de mouse y precion de tecla)
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 running = False
-    
-    
+        
     screen.fill(config.BLACK)
-    
-    
+        
     msj.dibujar(screen)
     teclado.dibujar(screen)
     msj.actualizar()

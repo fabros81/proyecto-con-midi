@@ -12,9 +12,9 @@ class Mensajes:
     
     # toma cada mensaje de Archivo.mi lo mete en una instancia de Nota y genera las 4 listas de reproducción.
     def printMsj1(self): 
+        print(f"pixeles por negra: {self.c.PIXELES_X_PULSO}")
         for i in self.msj1:
-            print(f"pixeles por negra: {self.c.PIXELES_X_PULSO}")
-            print(f"msj: (nota: {i.nota}, abreAcu:{i.abreAcu},cierra (tick): {i.duracion}, channel: {i.channel},rect.height: {i.objeto.height}, etc")
+            print(f"msj: (nota: {i.nota}, abreAcu:{i.abreAcu},cierra (tick): {i.duracion}, channel: {i.channel},rect: ({i.objeto.x},{i.objeto.y},{i.objeto.width},{i.objeto.height}),encendido: {i.encendido},color: {i.color}")
     
     def ticks_a_ms(self, ticks_midi):
         """Convierte ticks MIDI a milisegundos con ajuste de tempo"""
@@ -127,15 +127,18 @@ class Mensajes:
         
     def dibujar(self,pantalla):
         if (len(self.msj1) >0):
-            if self.ticks_a_ms(self.msj1[0].abreAcu) <= (pygame.time.get_ticks()- self.c.TIEMPO_INICIO):
+            if self.ticks_a_ms(self.msj1[0].abreAcu) <= (pygame.time.get_ticks()- self.c.TIEMPO_INICIO)* self.c.AJUSTE_TEMPO/100:
                 self.lanzar.append(self.msj1[0])               
-                self.msj1.remove(self.msj1[0])
+                self.msj1.pop(0)
         for i in self.lanzar:
             pygame.draw.rect(pantalla, self.c.RED, i.objeto)
+
+    
         
     def actualizar(self):
         for i in self.lanzar: # se lanzan objetos notas
-            i.objeto.y += 5
+            i.objeto.y += self.c.PPS * self.c.DT_s
+            
             if i.objeto.bottom >= self.c.FINAL_RECORRIDO:
                 self.t.Encender(i.nota)
                 
