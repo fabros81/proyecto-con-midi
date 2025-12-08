@@ -58,4 +58,4 @@ class Archivo:
 
             quit()   
         
-     
+    

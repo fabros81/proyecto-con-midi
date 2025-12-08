@@ -1,0 +1,16 @@
+Los datos se obtienen de la lectura que hace la librería MIDO del archivo midi
+
+TEMPO = dato provisto por metamensajes
+BPM = (60.000.000 (microsegundos) x 1 BPM )/ TEMPO
+
+BEAT_X_MS = (60000 ms x 1 BPM) / BPM
+
+TICKS_PER_BEAT = dato provisto por metamensajes
+
+def MS_A_TICK_MIDI(X (ms)) = (X (ms)  x TICKS_PER_BEAT) // BEAT_X_MS
+
+RECORRIDO = ALTO_PANTALLA - ALTO_TECLA_BLANCA
+
+BEAT_EN_PANTALLA = 4 (valor arbitrario de cuantos beat quiero ver en pantalla antes de llegar al teclado)
+
+PX_X_TICK_MIDI = (RECORRIDO X TICKS_PER_BEAT) / BEAT_EN_PANTALLA
