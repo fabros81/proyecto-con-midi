@@ -5,7 +5,7 @@ class Config:
         self.ANCHO_PANTALLA = 1280
         self.ALTO_PANTALLA = 720
         self.PULSOS_PANTALLA = 5 # indica cuantos pulsos aparecen en la pantalla antes de ejecutarse.Ej 4, aparecen 4 tiempos en pantalla
-        self.AJUSTE_TEMPO = 100  #valor porcentual. 1 = tempo original, 1.5 = 50% más rápido, 0.5 = 50% más lento
+        self.AJUSTE_TEMPO = 75  #valor porcentual. 1 = tempo original, 1.5 = 50% más rápido, 0.5 = 50% más lento
         self.COLORS = [(255,0,0), (0,0,255)]
         self.BLACK = (0,0,0)
         self.WHITE = (255,255,255)
@@ -14,7 +14,7 @@ class Config:
         self.BLUE = (0,0,255)
         self.FUXIA = (255,0,128)
         self.ORANGE = (255,165,0)
-        self.COLORS = [self.RED,self.BLUE,self.ORANGE,self.FUXIA]
+        self.COLORS = [self.RED,self.FUXIA,self.ORANGE,self.BLUE]
         # lo inicializa Archivo.py con el metodo ...
         self.TICKS_PER_BEAT = None
                 

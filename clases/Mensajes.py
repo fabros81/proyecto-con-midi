@@ -12,12 +12,11 @@ class Mensajes:
     
     # toma cada mensaje de Archivo.mi lo mete en una instancia de Nota y genera las 4 listas de reproducción.
     def printMsj1(self): 
-        print(self.msj1)
-        '''
+        
         for s in range(0,4):
             for i in self.msj1[s]:
-                print(f"canal/indice{s}: {i}")
-        '''
+                print(f"channel {s}: {i}")
+        
         quit()
     
         
@@ -140,7 +139,7 @@ class Mensajes:
                     self.lanzar.append(self.msj1[i][0])               
                     self.msj1[i].pop(0)
         for j in self.lanzar:
-            pygame.draw.rect(pantalla, self.c.COLORS[i], j[4])
+            pygame.draw.rect(pantalla, self.c.COLORS[j[3]], j[4])
 
     
         
@@ -149,7 +148,7 @@ class Mensajes:
         for i in self.lanzar: # se lanzan objetos notas
             i[4].y += self.c.PPS * self.c.DT_s
             if i[4].bottom >= self.c.FINAL_RECORRIDO:
-                self.t.Encender(i.nota)
+                self.t.Encender(i[0])
                 
             if i[4].y > self.c.FINAL_RECORRIDO :
                 self.t.Apagar(i[0])
